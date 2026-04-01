@@ -18,11 +18,6 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "API OK" });
 });
 
-// ❗ 마지막에 404
-app.use((req, res) => {
-  res.status(404).send("Not Found");
-});
-
 // Vercel 대응
 module.exports = app;
 
@@ -88,4 +83,36 @@ app.post("/api/logs/session", (req, res) => {
 app.post("/api/logs/event", (req, res) => {
   console.log("EVENT LOG:", req.body);
   res.json({ ok: true });
+});
+
+// like
+app.post("/api/products/:id/like", (req, res) => {
+  res.json({ ok: true });
+});
+
+// cart
+app.post("/api/products/:id/cart", (req, res) => {
+  res.json({ ok: true });
+});
+
+// orders
+app.post("/api/orders", (req, res) => {
+  res.json({
+    orderId: "ORD123",
+    items: req.body.items || [],
+    shippingFee: 0,
+    finalAmount: 30000
+  });
+});
+
+// payment
+app.post("/api/orders/:id/payment", (req, res) => {
+  res.json({
+    transactionId: "PAY123"
+  });
+});
+
+// ❗ 마지막에 404
+app.use((req, res) => {
+  res.status(404).send("Not Found");
 });
