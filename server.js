@@ -32,3 +32,60 @@ if (require.main === module) {
     console.log("Server running on http://localhost:3000");
   });
 }
+
+// 헬스체크
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+// 상품 리스트 (임시 데이터)
+app.get("/api/products", (req, res) => {
+  res.json({
+    total: 2,
+    totalPages: 1,
+    products: [
+      {
+        id: 1,
+        name: "로맨틱 원피스",
+        price: 39000,
+        salePrice: 29000,
+        emoji: "👗",
+        badge: "SALE",
+        sizes: ["S", "M", "L"],
+        colors: [{ name: "핑크", hex: "#e8a0b0" }]
+      },
+      {
+        id: 2,
+        name: "데일리 니트",
+        price: 25000,
+        emoji: "🧥",
+        sizes: ["S", "M"],
+        colors: [{ name: "베이지", hex: "#f5f0eb" }]
+      }
+    ]
+  });
+});
+
+// 상품 상세
+app.get("/api/products/:id", (req, res) => {
+  res.json({
+    id: Number(req.params.id),
+    name: "샘플 상품",
+    price: 30000,
+    emoji: "👗",
+    sizes: ["S", "M", "L"],
+    colors: [{ name: "블랙", hex: "#000" }]
+  });
+});
+
+// 로그 (세션)
+app.post("/api/logs/session", (req, res) => {
+  console.log("SESSION LOG:", req.body);
+  res.json({ ok: true });
+});
+
+// 로그 (이벤트)
+app.post("/api/logs/event", (req, res) => {
+  console.log("EVENT LOG:", req.body);
+  res.json({ ok: true });
+});
