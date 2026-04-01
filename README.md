@@ -1,6 +1,7 @@
 # Style Is You - 쇼핑몰
 
 여성의류 쇼핑몰 프로젝트 (Node.js + Express)
+link: https://toridos.vercel.app/
 
 ## 프로젝트 구조
 
