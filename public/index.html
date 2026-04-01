@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Is You</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --pink:#e8a0b0;--pink-dark:#c0607a;--pink-light:#fdf0f3;
+    --beige:#f5f0eb;--dark:#2a2a2a;--gray:#888;--border:#e8e0e5;
+  }
+  body{font-family:'Noto Sans KR',sans-serif;background:#fff;color:var(--dark);font-size:14px}
+  /* ── HEADER ── */
+  header{border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:100}
+  .top-bar{background:var(--dark);color:#fff;font-size:11px;text-align:center;padding:6px;letter-spacing:1px}
+  .header-main{display:flex;align-items:center;justify-content:space-between;padding:14px 32px}
+  .logo{font-family:'Playfair Display',serif;font-size:22px;letter-spacing:2px;cursor:pointer}
+  .logo span{color:var(--pink-dark);font-style:italic}
+  nav{display:flex;gap:28px}
+  nav a{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--dark);text-decoration:none;cursor:pointer;padding-bottom:2px;border-bottom:1px solid transparent;transition:border-color .2s}
+  nav a:hover,nav a.active{border-color:var(--dark)}
+  .header-icons{display:flex;gap:18px;align-items:center}
+  .header-icons button{background:none;border:none;cursor:pointer;font-size:16px;color:var(--dark);position:relative}
+  .cart-badge{position:absolute;top:-6px;right:-6px;background:var(--pink-dark);color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .search-bar{border-top:1px solid var(--border);padding:8px 32px;display:flex;align-items:center;gap:8px;background:var(--pink-light)}
+  .search-bar input{flex:1;border:none;background:none;font-family:'Noto Sans KR',sans-serif;font-size:13px;outline:none}
+  .search-bar button{background:var(--dark);color:#fff;border:none;padding:5px 14px;font-size:12px;cursor:pointer;letter-spacing:1px}
+  /* ── PAGES ── */
+  .page{display:none}.page.active{display:block}
+  /* ── HERO ── */
+  .hero{height:480px;background:linear-gradient(135deg,#2a2a2a 0%,#4a3840 50%,#2a2a2a 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 60px,rgba(255,255,255,.02) 60px,rgba(255,255,255,.02) 61px)}
+  .hero-content{text-align:center;z-index:1;padding:20px}
+  .hero-tag{display:inline-block;border:1px solid var(--pink);color:var(--pink);font-size:10px;letter-spacing:3px;padding:4px 16px;margin-bottom:20px;text-transform:uppercase}
+  .hero h1{font-family:'Playfair Display',serif;font-size:52px;color:#fff;line-height:1.1;margin-bottom:12px}
+  .hero h1 em{color:var(--pink);font-style:italic}
+  .hero p{color:rgba(255,255,255,.6);font-size:13px;letter-spacing:1px;margin-bottom:28px}
+  .hero-btns{display:flex;gap:12px;justify-content:center}
+  .btn-primary{background:var(--pink-dark);color:#fff;border:none;padding:12px 28px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .2s}
+  .btn-primary:hover{background:#a84f68}
+  .btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);padding:12px 28px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:border-color .2s}
+  .btn-outline:hover{border-color:#fff}
+  /* ── SECTION ── */
+  .section{padding:40px 32px 20px}
+  .section-title{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:6px}
+  .section-sub{color:var(--gray);font-size:12px;letter-spacing:1px;margin-bottom:24px}
+  /* ── TABS ── */
+  .cat-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
+  .cat-tab{padding:8px 20px;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;color:var(--gray);transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'Noto Sans KR',sans-serif}
+  .cat-tab.active{color:var(--dark);border-bottom-color:var(--dark)}
+  /* ── LIST CONTROLS ── */
+  .list-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .item-count{color:var(--gray);font-size:12px}
+  .sort-select{border:1px solid var(--border);padding:6px 12px;font-size:12px;font-family:'Noto Sans KR',sans-serif;outline:none;cursor:pointer;background:#fff}
+  /* ── PRODUCT GRID ── */
+  .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 32px 40px}
+  .product-card{cursor:pointer;position:relative}
+  .product-img-wrap{position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--beige);display:flex;align-items:center;justify-content:center}
+  .product-emoji{font-size:80px;transition:transform .4s}
+  .product-card:hover .product-emoji{transform:scale(1.08)}
+  .product-img-overlay{position:absolute;inset:0;background:rgba(0,0,0,.15);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:16px}
+  .product-card:hover .product-img-overlay{opacity:1}
+  .product-img-overlay button{background:#fff;border:none;padding:8px 20px;font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+  .product-badge{position:absolute;top:10px;left:10px;background:var(--pink-dark);color:#fff;font-size:10px;padding:3px 8px;letter-spacing:1px}
+  .product-like{position:absolute;top:10px;right:10px;background:none;border:none;font-size:18px;cursor:pointer;color:#ccc;transition:color .2s}
+  .product-like.liked,.product-like:hover{color:var(--pink-dark)}
+  .product-info{padding:12px 0 0}
+  .product-name{font-size:13px;margin-bottom:4px;line-height:1.4}
+  .product-price-row{display:flex;align-items:center;gap:8px}
+  .product-price{font-size:14px;font-weight:500}
+  .product-price-original{font-size:12px;color:var(--gray);text-decoration:line-through}
+  .product-sale{font-size:12px;color:var(--pink-dark);font-weight:500}
+  /* ── DETAIL ── */
+  .detail-wrap{padding:40px 32px}
+  .breadcrumb{font-size:11px;color:var(--gray);margin-bottom:24px;letter-spacing:.5px}
+  .breadcrumb span{cursor:pointer}.breadcrumb span:hover{color:var(--dark)}
+  .detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  .detail-imgs{display:flex;gap:8px}
+  .detail-thumbs{display:flex;flex-direction:column;gap:8px}
+  .detail-thumb{width:64px;height:80px;background:var(--beige);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;transition:border-color .2s;flex-shrink:0}
+  .detail-thumb.active{border-color:var(--dark)}
+  .detail-main-img{flex:1;background:var(--beige);display:flex;align-items:center;justify-content:center;font-size:100px;min-height:480px}
+  .detail-brand{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
+  .detail-name{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px;line-height:1.2}
+  .detail-price-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .detail-price{font-size:22px;font-weight:500}
+  .detail-original{font-size:15px;color:var(--gray);text-decoration:line-through}
+  .detail-discount{font-size:15px;color:var(--pink-dark);font-weight:500}
+  .divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+  .option-label{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;color:var(--gray)}
+  .color-options{display:flex;gap:8px;margin-bottom:20px}
+  .color-dot{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .2s;position:relative}
+  .color-dot.active::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--dark)}
+  .size-options{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+  .size-btn{width:44px;height:44px;border:1px solid var(--border);background:none;font-size:12px;cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+  .size-btn:hover,.size-btn.active{border-color:var(--dark);background:var(--dark);color:#fff}
+  .qty-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .qty-ctrl{display:flex;align-items:center;border:1px solid var(--border)}
+  .qty-btn{width:36px;height:36px;background:none;border:none;font-size:16px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+  .qty-num{width:40px;text-align:center;font-size:14px}
+  .detail-btns{display:flex;gap:8px;margin-bottom:16px}
+  .btn-cart{flex:1;padding:14px;background:none;border:1px solid var(--dark);font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+  .btn-cart:hover{background:var(--dark);color:#fff}
+  .btn-buy{flex:1;padding:14px;background:var(--dark);border:1px solid var(--dark);color:#fff;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .2s}
+  .btn-buy:hover{background:#444}
+  .like-btn-detail{background:none;border:1px solid var(--border);padding:10px 20px;cursor:pointer;font-size:16px;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+  /* ── DETAIL TABS ── */
+  .detail-tab-nav{display:flex;border-bottom:1px solid var(--border);margin-top:32px}
+  .detail-tab-btn{padding:10px 20px;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;color:var(--gray);transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+  .detail-tab-btn.active{color:var(--dark);border-bottom-color:var(--dark)}
+  .detail-tab-content{padding:20px 0;font-size:13px;line-height:1.8;color:#555}
+  /* ── CART SIDEBAR ── */
+  .cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200}
+  .cart-overlay.open{display:block}
+  .cart-panel{position:fixed;top:0;right:-420px;width:400px;height:100vh;background:#fff;z-index:201;transition:right .3s;display:flex;flex-direction:column;box-shadow:-4px 0 20px rgba(0,0,0,.08)}
+  .cart-panel.open{right:0}
+  .cart-header{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border)}
+  .cart-title{font-family:'Playfair Display',serif;font-size:20px}
+  .cart-close{background:none;border:none;font-size:20px;cursor:pointer}
+  .cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+  .cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .cart-item-img{width:72px;height:90px;background:var(--beige);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+  .cart-item-info{flex:1}
+  .cart-item-name{font-size:13px;margin-bottom:4px}
+  .cart-item-opts{font-size:11px;color:var(--gray);margin-bottom:8px}
+  .cart-item-price{font-size:14px;font-weight:500}
+  .cart-item-remove{background:none;border:none;color:var(--gray);cursor:pointer;font-size:16px;align-self:flex-start}
+  .cart-footer{padding:20px 24px;border-top:1px solid var(--border)}
+  .cart-total-row{display:flex;justify-content:space-between;margin-bottom:16px}
+  .cart-total-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gray)}
+  .cart-total-amount{font-size:20px;font-weight:500}
+  .btn-checkout{width:100%;padding:14px;background:var(--dark);color:#fff;border:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+  .btn-checkout:hover{background:#444}
+  .empty-cart{text-align:center;padding:60px 20px;color:var(--gray)}
+  /* ── ORDER PAGE ── */
+  .order-wrap{max-width:960px;margin:0 auto;padding:40px 32px}
+  .order-title{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:32px}
+  .order-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:start}
+  .order-section{margin-bottom:28px}
+  .order-section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  .form-group label{font-size:11px;color:var(--gray);letter-spacing:.5px}
+  .form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);padding:10px 12px;font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none;transition:border-color .2s;background:#fff}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--dark)}
+  .payment-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+  .pay-method{border:1px solid var(--border);padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s;font-size:12px}
+  .pay-method.active{border-color:var(--dark);background:var(--dark);color:#fff}
+  .card-fields{display:none}
+  .card-fields.show{display:block}
+  .order-summary-box{background:var(--beige);padding:24px;position:sticky;top:80px}
+  .order-item-row{display:flex;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(0,0,0,.08)}
+  .order-item-img{width:56px;height:70px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+  .order-item-info{flex:1;font-size:13px}
+  .order-item-name{font-weight:500;margin-bottom:4px}
+  .order-item-opt{color:var(--gray);font-size:11px}
+  .order-item-price{font-weight:500;text-align:right;font-size:13px}
+  .summary-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px}
+  .summary-row.total{font-size:16px;font-weight:500;padding-top:12px;border-top:1px solid rgba(0,0,0,.1);margin-top:4px}
+  .free-shipping{color:var(--pink-dark);font-size:12px}
+  .btn-order-submit{width:100%;padding:16px;background:var(--pink-dark);color:#fff;border:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:16px;transition:background .2s}
+  .btn-order-submit:hover{background:#a84f68}
+  .btn-order-submit:disabled{background:#ccc;cursor:not-allowed}
+  /* ── ORDER COMPLETE ── */
+  .complete-wrap{max-width:560px;margin:0 auto;padding:80px 32px;text-align:center}
+  .complete-icon{font-size:64px;margin-bottom:24px}
+  .complete-title{font-family:'Playfair Display',serif;font-size:32px;margin-bottom:12px}
+  .complete-sub{color:var(--gray);font-size:14px;margin-bottom:32px;line-height:1.7}
+  .order-info-box{background:var(--beige);padding:24px;text-align:left;margin-bottom:32px}
+  .order-info-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px}
+  .order-info-row:last-child{margin-bottom:0;font-weight:500;font-size:15px;padding-top:10px;border-top:1px solid rgba(0,0,0,.1)}
+  /* ── PAGINATION ── */
+  .pagination{display:flex;justify-content:center;gap:4px;padding:20px 0 40px}
+  .page-btn{width:36px;height:36px;border:1px solid var(--border);background:none;cursor:pointer;font-size:13px;font-family:'Noto Sans KR',sans-serif}
+  .page-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+  /* ── TOAST ── */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;padding:12px 24px;font-size:13px;z-index:300;transition:transform .3s;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  /* ── LOADING ── */
+  .loading{text-align:center;padding:60px;color:var(--gray);font-size:13px}
+  /* ── API STATUS ── */
+  .api-status{position:fixed;bottom:70px;right:20px;font-size:11px;padding:4px 10px;border-radius:20px;opacity:.7;z-index:200}
+  .api-status.ok{background:#d4edda;color:#155724}
+  .api-status.err{background:#f8d7da;color:#721c24}
+</style>
+</head>
+<body>
+
+<!-- API 연결 상태 표시 -->
+<div class="api-status" id="api-status">API 연결 중...</div>
+
+<div class="top-bar">무료배송 · 5만원 이상 구매 시 | 적립금 2배 이벤트 진행 중</div>
+
+<header>
+  <div class="header-main">
+    <div class="logo" onclick="nav('main')">Style <span>Is</span> You</div>
+    <nav>
+      <a onclick="nav('main')" id="nav-main" class="active">홈</a>
+      <a onclick="showCategory('전체')" id="nav-cat">카테고리</a>
+      <a onclick="showCategory('신상품')">신상품</a>
+      <a onclick="showCategory('세일')">SALE</a>
+    </nav>
+    <div class="header-icons">
+      <button onclick="toggleSearch()">🔍</button>
+      <button onclick="openCart()">🛍️<span class="cart-badge" id="cart-badge">0</span></button>
+      <button>👤</button>
+    </div>
+  </div>
+  <div class="search-bar" id="search-bar" style="display:none">
+    <input type="text" id="search-input" placeholder="검색어를 입력하세요..." onkeyup="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">검색</button>
+  </div>
+</header>
+
+<!-- ───────────── 메인 ───────────── -->
+<div class="page active" id="page-main">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-tag">2025 Spring Collection</div>
+      <h1>당신의 스타일을<br><em>완성하세요</em></h1>
+      <p>매일이 특별해지는 여성 의류 쇼핑몰</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showCategory('전체')">쇼핑하기</button>
+        <button class="btn-outline" onclick="showCategory('신상품')">신상품 보기</button>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">인기 상품</div>
+    <div class="section-sub">BEST SELLERS</div>
+    <div class="cat-tabs">
+      <button class="cat-tab active" onclick="filterMain('전체',this)">전체</button>
+      <button class="cat-tab" onclick="filterMain('원피스',this)">원피스</button>
+      <button class="cat-tab" onclick="filterMain('상의',this)">상의</button>
+      <button class="cat-tab" onclick="filterMain('하의',this)">하의</button>
+      <button class="cat-tab" onclick="filterMain('아우터',this)">아우터</button>
+    </div>
+  </div>
+  <div class="product-grid" id="main-grid"><div class="loading">상품을 불러오는 중...</div></div>
+</div>
+
+<!-- ───────────── 카테고리 ───────────── -->
+<div class="page" id="page-category">
+  <div class="section">
+    <div class="section-title" id="cat-title">전체 상품</div>
+    <div class="section-sub">ALL PRODUCTS</div>
+    <div class="cat-tabs">
+      <button class="cat-tab active" onclick="filterCat('전체',this)">전체</button>
+      <button class="cat-tab" onclick="filterCat('원피스',this)">원피스</button>
+      <button class="cat-tab" onclick="filterCat('상의',this)">상의</button>
+      <button class="cat-tab" onclick="filterCat('하의',this)">하의</button>
+      <button class="cat-tab" onclick="filterCat('아우터',this)">아우터</button>
+    </div>
+    <div class="list-controls">
+      <span class="item-count" id="cat-count">총 0개 상품</span>
+      <select class="sort-select" onchange="sortChange(this.value)">
+        <option value="newest">최신순</option>
+        <option value="price_asc">낮은 가격순</option>
+        <option value="price_desc">높은 가격순</option>
+        <option value="popular">인기순</option>
+      </select>
+    </div>
+  </div>
+  <div class="product-grid" id="cat-grid"><div class="loading">상품을 불러오는 중...</div></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ───────────── 상품 상세 ───────────── -->
+<div class="page" id="page-detail">
+  <div class="detail-wrap">
+    <div class="breadcrumb">
+      <span onclick="nav('main')">홈</span> &nbsp;›&nbsp;
+      <span onclick="showCategory('전체')">카테고리</span> &nbsp;›&nbsp;
+      <span id="detail-bc">상품명</span>
+    </div>
+    <div class="detail-layout">
+      <div class="detail-imgs">
+        <div class="detail-thumbs" id="detail-thumbs"></div>
+        <div class="detail-main-img" id="detail-main-img">👗</div>
+      </div>
+      <div>
+        <div class="detail-brand">STYLE IS YOU</div>
+        <div class="detail-name" id="detail-name"></div>
+        <div class="detail-price-row">
+          <span class="detail-price" id="detail-price"></span>
+          <span class="detail-original" id="detail-original"></span>
+          <span class="detail-discount" id="detail-discount"></span>
+        </div>
+        <hr class="divider">
+        <div class="option-label">색상</div>
+        <div class="color-options" id="color-options"></div>
+        <div class="option-label">사이즈</div>
+        <div class="size-options" id="size-options"></div>
+        <hr class="divider">
+        <div class="qty-row">
+          <div class="option-label" style="margin:0">수량</div>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <span class="qty-num" id="qty-num">1</span>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+        </div>
+        <div class="detail-btns">
+          <button class="btn-cart" onclick="addToCartDetail()">장바구니</button>
+          <button class="btn-buy" onclick="addToCartDetail();openCart()">구매하기</button>
+        </div>
+        <button class="like-btn-detail" id="like-btn" onclick="toggleDetailLike()">♡ 좋아요</button>
+        <!-- 탭 -->
+        <div class="detail-tab-nav">
+          <button class="detail-tab-btn active" onclick="switchTab('info',this)">상품정보</button>
+          <button class="detail-tab-btn" onclick="switchTab('review',this)">리뷰</button>
+          <button class="detail-tab-btn" onclick="switchTab('qna',this)">상품문의</button>
+        </div>
+        <div class="detail-tab-content" id="tab-info">
+          · 소재: 폴리에스터 80%, 스판덱스 20%<br>
+          · 세탁: 손세탁 권장, 30°C 이하<br>
+          · 원산지: 국내산<br>
+          · 모델 착용 사이즈: M (164cm / 47kg)
+        </div>
+        <div class="detail-tab-content" id="tab-review" style="display:none">
+          <div style="border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:14px">
+            <div style="font-weight:500;margin-bottom:4px">⭐⭐⭐⭐⭐ 핏이 너무 예뻐요!</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:6px">2025.03.15 · M사이즈 착용</div>
+            <div>사진이랑 실물이 똑같아요. 재구매 의사 있습니다!</div>
+          </div>
+          <div>
+            <div style="font-weight:500;margin-bottom:4px">⭐⭐⭐⭐ 배송 빠르고 좋아요</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:6px">2025.03.10 · S사이즈 착용</div>
+            <div>배송이 다음날 바로 왔어요. 색상이 너무 예뻐요!</div>
+          </div>
+        </div>
+        <div class="detail-tab-content" id="tab-qna" style="display:none">
+          <div style="border-bottom:1px solid var(--border);padding-bottom:14px;margin-bottom:14px">
+            <div style="cursor:pointer;font-weight:500" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display=='none'?'block':'none'">🔓 재입고 예정이 있나요?</div>
+            <div style="display:none;margin-top:10px;font-size:13px;color:#555">다음 달 중순에 재입고 예정입니다 :)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────── 검색결과 ───────────── -->
+<div class="page" id="page-search">
+  <div class="section">
+    <div class="section-title" id="search-kw-title"></div>
+    <div class="section-sub" id="search-result-count"></div>
+  </div>
+  <div class="product-grid" id="search-grid"></div>
+</div>
+
+<!-- ───────────── 주문서 ───────────── -->
+<div class="page" id="page-order">
+  <div class="order-wrap">
+    <div class="order-title">주문 / 결제</div>
+    <div class="order-layout">
+      <!-- 왼쪽: 입력폼 -->
+      <div>
+        <!-- 배송지 -->
+        <div class="order-section">
+          <div class="order-section-title">배송 정보</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>받는 분 *</label>
+              <input type="text" id="sh-name" placeholder="이름">
+            </div>
+            <div class="form-group">
+              <label>연락처 *</label>
+              <input type="text" id="sh-phone" placeholder="010-0000-0000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>주소 *</label>
+            <input type="text" id="sh-address" placeholder="주소를 입력하세요">
+          </div>
+          <div class="form-group">
+            <label>상세 주소</label>
+            <input type="text" id="sh-detail" placeholder="동/호수, 층 등">
+          </div>
+          <div class="form-group">
+            <label>배송 메모</label>
+            <select id="sh-memo">
+              <option value="">배송 메모를 선택해주세요</option>
+              <option>문 앞에 놓아주세요</option>
+              <option>경비실에 맡겨주세요</option>
+              <option>배송 전 연락주세요</option>
+              <option>직접 입력</option>
+            </select>
+          </div>
+        </div>
+        <!-- 결제 수단 -->
+        <div class="order-section">
+          <div class="order-section-title">결제 수단</div>
+          <div class="payment-methods">
+            <div class="pay-method active" onclick="selectPay('card',this)">💳 신용카드</div>
+            <div class="pay-method" onclick="selectPay('transfer',this)">🏦 계좌이체</div>
+            <div class="pay-method" onclick="selectPay('kakao',this)">💛 카카오페이</div>
+          </div>
+          <!-- 카드 입력 필드 -->
+          <div class="card-fields show" id="card-fields">
+            <div class="form-group">
+              <label>카드 번호 *</label>
+              <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCard(this)">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>유효기간 *</label>
+                <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+              </div>
+              <div class="form-group">
+                <label>CVC *</label>
+                <input type="text" id="card-cvc" placeholder="000" maxlength="3">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>할부</label>
+              <select id="card-install">
+                <option value="0">일시불</option>
+                <option value="2">2개월</option>
+                <option value="3">3개월</option>
+                <option value="6">6개월</option>
+                <option value="12">12개월</option>
+              </select>
+            </div>
+          </div>
+          <!-- 계좌이체 -->
+          <div class="card-fields" id="transfer-fields">
+            <div style="background:var(--beige);padding:16px;font-size:13px;line-height:1.8">
+              <strong>입금 계좌 안내</strong><br>
+              국민은행 123-456-789012<br>
+              예금주: 스타일이즈유(주)<br>
+              <span style="color:var(--gray);font-size:12px">주문 후 24시간 이내 입금 확인 후 발송됩니다</span>
+            </div>
+          </div>
+          <!-- 카카오페이 -->
+          <div class="card-fields" id="kakao-fields">
+            <div style="background:#FEE500;padding:16px;font-size:13px;line-height:1.8;border-radius:4px">
+              💛 <strong>카카오페이로 결제</strong><br>
+              <span style="color:#333;font-size:12px">결제하기 버튼을 누르면 카카오페이 앱으로 연결됩니다 (테스트 환경)</span>
+            </div>
+          </div>
+        </div>
+        <!-- 구매 동의 -->
+        <div class="order-section">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+            <input type="checkbox" id="agree-all" onchange="document.getElementById('agree1').checked=this.checked;document.getElementById('agree2').checked=this.checked">
+            <label for="agree-all" style="cursor:pointer;font-weight:500">전체 동의</label>
+          </div>
+          <div style="margin-top:10px;padding-left:4px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray)">
+              <input type="checkbox" id="agree1">
+              <label for="agree1" style="cursor:pointer">[필수] 구매 조건 확인 및 결제 진행에 동의합니다</label>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray)">
+              <input type="checkbox" id="agree2">
+              <label for="agree2" style="cursor:pointer">[필수] 개인정보 제3자 제공에 동의합니다</label>
+            </div>
+          </div>
+        </div>
+        <button class="btn-order-submit" id="order-submit-btn" onclick="submitOrder()">결제하기</button>
+      </div>
+      <!-- 오른쪽: 주문 요약 -->
+      <div>
+        <div class="order-summary-box">
+          <div class="order-section-title">주문 상품</div>
+          <div id="order-items-summary"></div>
+          <div class="summary-row"><span>상품 금액</span><span id="sum-products">₩0</span></div>
+          <div class="summary-row"><span>배송비</span><span id="sum-shipping">₩3,000</span></div>
+          <div class="summary-row" id="free-ship-row" style="display:none">
+            <span></span><span class="free-shipping">🎉 5만원 이상 구매 시 무료배송!</span>
+          </div>
+          <div class="summary-row total"><span>최종 결제금액</span><span id="sum-total">₩0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────── 주문완료 ───────────── -->
+<div class="page" id="page-complete">
+  <div class="complete-wrap">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">주문이 완료되었습니다!</div>
+    <div class="complete-sub" id="complete-sub"></div>
+    <div class="order-info-box" id="complete-info"></div>
+    <button class="btn-primary" onclick="nav('main')" style="width:100%;padding:14px;font-size:13px">쇼핑 계속하기</button>
+  </div>
+</div>
+
+<!-- ───────────── 장바구니 ───────────── -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-header">
+    <div class="cart-title">장바구니</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">합계</span>
+      <span class="cart-total-amount" id="cart-total">₩0</span>
+    </div>
+    <button class="btn-checkout" onclick="closeCart();goToOrder()">주문하기</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── 설정 ─────────────────────────────────────────────────
+const API_BASE = 'http://localhost:3001/api';
+const SESSION_ID = 'sess_' + Math.random().toString(36).slice(2);
+
+// ── 상태 ─────────────────────────────────────────────────
+let cart = [];
+let liked = new Set();
+let currentCat = '전체';
+let currentSort = 'newest';
+let currentPage = 1;
+let detailProduct = null;
+let detailQty = 1;
+let selectedSize = '';
+let selectedColorIdx = 0;
+let payMethod = 'card';
+let toastTimer;
+
+// ── API 헬퍼 ─────────────────────────────────────────────
+async function api(path, opts = {}) {
+  const res = await fetch(API_BASE + path, {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-session-id': SESSION_ID,
+      ...opts.headers
+    },
+    ...opts
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || '요청 실패');
+  }
+  return res.json();
+}
+
+// 로그 전송
+async function logEvent(event, data = {}) {
+  try {
+    await api('/logs/event', {
+      method: 'POST',
+      body: JSON.stringify({ event, data: { ...data, sessionId: SESSION_ID } })
+    });
+  } catch {}
+}
+
+// ── 앱 초기화 ─────────────────────────────────────────────
+(async function init() {
+  // API 헬스체크
+  try {
+    await api('/health');
+    document.getElementById('api-status').textContent = '● 서버 연결됨';
+    document.getElementById('api-status').className = 'api-status ok';
+    setTimeout(() => document.getElementById('api-status').style.display='none', 3000);
+  } catch {
+    document.getElementById('api-status').textContent = '● 서버 연결 실패 (오프라인 모드)';
+    document.getElementById('api-status').className = 'api-status err';
+  }
+
+  // 세션 시작 로그
+  try {
+    await api('/logs/session', {
+      method: 'POST',
+      body: JSON.stringify({ sessionId: SESSION_ID, referrer: document.referrer, device: navigator.userAgent })
+    });
+  } catch {}
+
+  loadMainProducts();
+})();
+
+// ── 상품 로드 ─────────────────────────────────────────────
+async function loadProducts(params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  return api('/products?' + qs);
+}
+
+async function loadMainProducts(category = '전체') {
+  const grid = document.getElementById('main-grid');
+  grid.innerHTML = '<div class="loading">상품을 불러오는 중...</div>';
+  try {
+    const data = await loadProducts({ category: category === '전체' ? '' : category, limit: 8 });
+    renderGrid('main-grid', data.products);
+  } catch {
+    grid.innerHTML = '<div class="loading">상품을 불러올 수 없습니다</div>';
+  }
+}
+
+async function loadCategoryProducts() {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = '<div class="loading">상품을 불러오는 중...</div>';
+  try {
+    const data = await loadProducts({
+      category: currentCat === '전체' ? '' : currentCat,
+      sort: currentSort,
+      page: currentPage,
+      limit: 12
+    });
+    document.getElementById('cat-count').textContent = `총 ${data.total}개 상품`;
+    renderGrid('cat-grid', data.products);
+    renderPagination(data.totalPages);
+  } catch {
+    grid.innerHTML = '<div class="loading">상품을 불러올 수 없습니다</div>';
+  }
+}
+
+// ── 상품 카드 렌더 ────────────────────────────────────────
+function renderGrid(id, items) {
+  if (!items || items.length === 0) {
+    document.getElementById(id).innerHTML = '<div class="loading" style="grid-column:1/-1">상품이 없습니다</div>';
+    return;
+  }
+  document.getElementById(id).innerHTML = items.map(p => {
+    const displayPrice = p.salePrice || p.price;
+    const discount = p.salePrice ? Math.round((1 - p.salePrice/p.price)*100) : null;
+    const isLiked = liked.has(p.id);
+    return `
+      <div class="product-card" onclick="showDetail(${p.id})">
+        <div class="product-img-wrap">
+          <div class="product-emoji">${p.emoji}</div>
+          ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+          <button class="product-like ${isLiked?'liked':''}" onclick="event.stopPropagation();toggleLike(${p.id},this)">♥</button>
+          <div class="product-img-overlay">
+            <button onclick="event.stopPropagation();quickAdd(${p.id})">빠른 담기</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-name">${p.name}</div>
+          <div class="product-price-row">
+            <span class="product-price">₩${displayPrice.toLocaleString()}</span>
+            ${p.salePrice ? `<span class="product-price-original">₩${p.price.toLocaleString()}</span><span class="product-sale">-${discount}%</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderPagination(totalPages) {
+  document.getElementById('pagination').innerHTML = Array.from({length:totalPages},(_, i)=>i+1).map(i =>
+    `<button class="page-btn${i===currentPage?' active':''}" onclick="currentPage=${i};loadCategoryProducts()">${i}</button>`
+  ).join('');
+}
+
+// ── 상품 상세 ─────────────────────────────────────────────
+async function showDetail(id) {
+  try {
+    const p = await api(`/products/${id}`);
+    detailProduct = p;
+    detailQty = 1;
+    selectedColorIdx = 0;
+    selectedSize = p.sizes[1] || p.sizes[0];
+
+    document.getElementById('detail-bc').textContent = p.name;
+    document.getElementById('detail-name').textContent = p.name;
+    document.getElementById('detail-main-img').textContent = p.emoji;
+    document.getElementById('qty-num').textContent = 1;
+
+    const dp = p.salePrice || p.price;
+    const disc = p.salePrice ? Math.round((1-p.salePrice/p.price)*100) : null;
+    document.getElementById('detail-price').textContent = `₩${dp.toLocaleString()}`;
+    document.getElementById('detail-original').textContent = p.salePrice ? `₩${p.price.toLocaleString()}` : '';
+    document.getElementById('detail-discount').textContent = disc ? `-${disc}%` : '';
+
+    document.getElementById('detail-thumbs').innerHTML = [0,1,2].map((_, i) =>
+      `<div class="detail-thumb${i===0?' active':''}" onclick="document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));this.classList.add('active')">${p.emoji}</div>`
+    ).join('');
+
+    document.getElementById('color-options').innerHTML = p.colors.map((c, i) =>
+      `<div class="color-dot${i===0?' active':''}" style="background:${c.hex};border:1px solid #ddd" title="${c.name}" onclick="selectedColorIdx=${i};document.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));this.classList.add('active')"></div>`
+    ).join('');
+
+    document.getElementById('size-options').innerHTML = p.sizes.map(s =>
+      `<button class="size-btn${s===selectedSize?' active':''}" onclick="selectedSize='${s}';document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${s}</button>`
+    ).join('');
+
+    const isLiked = liked.has(p.id);
+    document.getElementById('like-btn').textContent = isLiked ? '♥ 관심 취소' : '♡ 좋아요';
+    document.getElementById('like-btn').style.color = isLiked ? 'var(--pink-dark)' : '';
+
+    switchTab('info', document.querySelector('.detail-tab-btn'));
+    nav('detail');
+    logEvent('product_click', { productId: p.id, productName: p.name });
+  } catch {
+    showToast('상품 정보를 불러올 수 없습니다');
+  }
+}
+
+// ── 좋아요 ────────────────────────────────────────────────
+async function toggleLike(id, el) {
+  const isLiked = liked.has(id);
+  if (isLiked) { liked.delete(id); el.classList.remove('liked'); }
+  else { liked.add(id); el.classList.add('liked'); showToast('♥ 관심 상품에 추가되었습니다'); }
+  try { await api(`/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
+}
+
+async function toggleDetailLike() {
+  if (!detailProduct) return;
+  const id = detailProduct.id;
+  const isLiked = liked.has(id);
+  if (isLiked) {
+    liked.delete(id);
+    document.getElementById('like-btn').textContent = '♡ 좋아요';
+    document.getElementById('like-btn').style.color = '';
+    showToast('관심 상품에서 삭제되었습니다');
+  } else {
+    liked.add(id);
+    document.getElementById('like-btn').textContent = '♥ 관심 취소';
+    document.getElementById('like-btn').style.color = 'var(--pink-dark)';
+    showToast('♥ 관심 상품에 추가되었습니다');
+  }
+  try { await api(`/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
+}
+
+// ── 장바구니 ──────────────────────────────────────────────
+function changeQty(d) { detailQty = Math.max(1, detailQty+d); document.getElementById('qty-num').textContent = detailQty; }
+
+async function addToCartDetail() {
+  if (!detailProduct) return;
+  addToCart(detailProduct, detailQty, selectedSize, detailProduct.colors[selectedColorIdx].name);
+}
+
+async function quickAdd(id) {
+  try {
+    const p = await api(`/products/${id}`);
+    addToCart(p, 1, p.sizes[1]||p.sizes[0], p.colors[0].name);
+  } catch {}
+}
+
+function addToCart(p, qty, size, color) {
+  const key = `${p.id}-${size}-${color}`;
+  const ex = cart.find(c => c.key === key);
+  if (ex) ex.qty += qty;
+  else cart.push({ key, product: p, qty, size, color });
+  updateCartBadge();
+  showToast('🛍️ 장바구니에 담겼습니다');
+  // API 로그
+  try { api(`/products/${p.id}/cart`, { method:'POST', body:JSON.stringify({ size, color, qty }) }); } catch {}
+}
+
+function updateCartBadge() {
+  document.getElementById('cart-badge').textContent = cart.reduce((s,c)=>s+c.qty,0);
+}
+
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-panel').classList.add('open');
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-panel').classList.remove('open');
+}
+
+function renderCart() {
+  const el = document.getElementById('cart-items');
+  if (cart.length === 0) {
+    el.innerHTML = '<div class="empty-cart"><div style="font-size:40px">🛍️</div><p>장바구니가 비어있습니다</p></div>';
+    document.getElementById('cart-total').textContent = '₩0';
+    return;
+  }
+  el.innerHTML = cart.map(c => `
+    <div class="cart-item">
+      <div class="cart-item-img">${c.product.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${c.product.name}</div>
+        <div class="cart-item-opts">색상: ${c.color} · 사이즈: ${c.size} · 수량: ${c.qty}</div>
+        <div class="cart-item-price">₩${((c.product.salePrice||c.product.price)*c.qty).toLocaleString()}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeCart('${c.key}')">✕</button>
+    </div>`).join('');
+  const total = cart.reduce((s,c)=>s+(c.product.salePrice||c.product.price)*c.qty,0);
+  document.getElementById('cart-total').textContent = `₩${total.toLocaleString()}`;
+}
+
+function removeCart(key) {
+  cart = cart.filter(c => c.key !== key);
+  updateCartBadge();
+  renderCart();
+}
+
+// ── 주문 페이지 ───────────────────────────────────────────
+function goToOrder() {
+  if (cart.length === 0) { showToast('장바구니가 비어있습니다'); return; }
+
+  const total = cart.reduce((s,c)=>s+(c.product.salePrice||c.product.price)*c.qty,0);
+  const shippingFee = total >= 50000 ? 0 : 3000;
+  const finalAmount = total + shippingFee;
+
+  // 상품 요약
+  document.getElementById('order-items-summary').innerHTML = cart.map(c => `
+    <div class="order-item-row">
+      <div class="order-item-img">${c.product.emoji}</div>
+      <div class="order-item-info">
+        <div class="order-item-name">${c.product.name}</div>
+        <div class="order-item-opt">${c.color} / ${c.size} / ${c.qty}개</div>
+      </div>
+      <div class="order-item-price">₩${((c.product.salePrice||c.product.price)*c.qty).toLocaleString()}</div>
+    </div>`).join('');
+
+  document.getElementById('sum-products').textContent = `₩${total.toLocaleString()}`;
+  document.getElementById('sum-shipping').textContent = shippingFee === 0 ? '무료' : `₩${shippingFee.toLocaleString()}`;
+  document.getElementById('sum-total').textContent = `₩${finalAmount.toLocaleString()}`;
+  document.getElementById('free-ship-row').style.display = total >= 50000 ? 'flex' : 'none';
+
+  nav('order');
+  logEvent('begin_checkout', { cartSize: cart.length, totalAmount: total });
+}
+
+// 결제 수단 선택
+function selectPay(method, el) {
+  payMethod = method;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('card-fields').classList.toggle('show', method === 'card');
+  document.getElementById('transfer-fields').classList.toggle('show', method === 'transfer');
+  document.getElementById('kakao-fields').classList.toggle('show', method === 'kakao');
+}
+
+// 카드번호 포맷
+function formatCard(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(el) {
+  let v = el.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 2) v = v.slice(0,2)+'/'+v.slice(2);
+  el.value = v;
+}
+
+// 주문 제출
+async function submitOrder() {
+  if (!document.getElementById('agree1').checked || !document.getElementById('agree2').checked) {
+    showToast('필수 약관에 동의해주세요');
+    return;
+  }
+  const name = document.getElementById('sh-name').value.trim();
+  const phone = document.getElementById('sh-phone').value.trim();
+  const address = document.getElementById('sh-address').value.trim();
+  if (!name || !phone || !address) { showToast('배송 정보를 모두 입력해주세요'); return; }
+
+  const btn = document.getElementById('order-submit-btn');
+  btn.disabled = true;
+  btn.textContent = '처리 중...';
+
+  try {
+    // 1단계: 주문 생성
+    const orderRes = await api('/orders', {
+      method: 'POST',
+      body: JSON.stringify({
+        items: cart.map(c => ({
+          productId: c.product.id,
+          size: c.size,
+          color: c.color,
+          qty: c.qty
+        })),
+        shipping: {
+          name,
+          phone,
+          address: address + ' ' + document.getElementById('sh-detail').value,
+          memo: document.getElementById('sh-memo').value
+        },
+        payment: { method: payMethod }
+      })
+    });
+
+    // 2단계: 결제 처리
+    const paymentData = payMethod === 'card' ? {
+      cardNumber: document.getElementById('card-number').value,
+      expiry: document.getElementById('card-expiry').value,
+      cvc: document.getElementById('card-cvc').value,
+      install: document.getElementById('card-install').value
+    } : {};
+
+    const payRes = await api(`/orders/${orderRes.orderId}/payment`, {
+      method: 'POST',
+      body: JSON.stringify({ paymentData })
+    });
+
+    // 완료 화면
+    showOrderComplete(orderRes, payRes);
+    cart = [];
+    updateCartBadge();
+
+  } catch (e) {
+    showToast(e.message || '결제 처리 중 오류가 발생했습니다');
+    btn.disabled = false;
+    btn.textContent = '결제하기';
+  }
+}
+
+function showOrderComplete(order, payment) {
+  document.getElementById('complete-sub').textContent =
+    `주문번호 ${order.orderId}로 주문이 접수되었습니다.\n결제가 완료되면 배송이 시작됩니다.`;
+
+  document.getElementById('complete-info').innerHTML = `
+    <div class="order-info-row"><span>주문번호</span><span>${order.orderId}</span></div>
+    <div class="order-info-row"><span>거래번호</span><span>${payment.transactionId}</span></div>
+    <div class="order-info-row"><span>주문 상품</span><span>${order.items.length}개</span></div>
+    <div class="order-info-row"><span>배송비</span><span>${order.shippingFee === 0 ? '무료' : '₩'+order.shippingFee.toLocaleString()}</span></div>
+    <div class="order-info-row"><span>결제 금액</span><span>₩${order.finalAmount.toLocaleString()}</span></div>`;
+
+  nav('complete');
+}
+
+// ── 네비게이션 ────────────────────────────────────────────
+function nav(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  window.scrollTo(0,0);
+  logEvent('page_view', { page: name });
+}
+
+function showCategory(cat) {
+  currentCat = cat;
+  currentPage = 1;
+  document.getElementById('cat-title').textContent = cat === '전체' ? '전체 상품' : cat;
+  document.querySelectorAll('#page-category .cat-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['전체','원피스','상의','하의','아우터'][i] === cat);
+  });
+  nav('category');
+  loadCategoryProducts();
+}
+
+function filterMain(cat, btn) {
+  document.querySelectorAll('#page-main .cat-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  loadMainProducts(cat);
+  logEvent('filter_change', { filter: cat });
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  currentPage = 1;
+  document.querySelectorAll('#page-category .cat-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  loadCategoryProducts();
+}
+
+function sortChange(val) { currentSort = val; currentPage = 1; loadCategoryProducts(); }
+
+function switchTab(tab, btn) {
+  ['info','review','qna'].forEach(t => document.getElementById('tab-'+t).style.display = t===tab?'block':'none');
+  document.querySelectorAll('.detail-tab-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+// ── 검색 ──────────────────────────────────────────────────
+let searchOpen = false;
+function toggleSearch() {
+  searchOpen = !searchOpen;
+  document.getElementById('search-bar').style.display = searchOpen ? 'flex' : 'none';
+  if (searchOpen) document.getElementById('search-input').focus();
+}
+
+async function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  try {
+    const data = await loadProducts({ search: q, limit: 20 });
+    document.getElementById('search-kw-title').innerHTML = `"<strong>${q}</strong>" 검색 결과`;
+    document.getElementById('search-result-count').textContent = `총 ${data.total}개의 상품`;
+    renderGrid('search-grid', data.products);
+    nav('search');
+    logEvent('search', { keyword: q, resultCount: data.total });
+  } catch { showToast('검색 중 오류가 발생했습니다'); }
+}
+
+// ── 토스트 ────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
