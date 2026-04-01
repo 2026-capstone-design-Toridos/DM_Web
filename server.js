@@ -1,34 +1,34 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
+
 const { requestLogger } = require("./logger");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-// ── 미들웨어 ──────────────────────────────────────────
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(requestLogger); // 모든 요청 로그 기록
+app.use(requestLogger);
 
-// 정적 파일 (public/index.html)
-app.use(express.static(path.join(__dirname, "public")));
-
-// ── API 라우터 ─────────────────────────────────────────
-app.use("/api/products", require("./routes/products"));
-app.use("/api/orders",   require("./routes/orders"));
-app.use("/api/logs",     require("./routes/logs"));
-
-// ── 헬스체크 ──────────────────────────────────────────
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", time: new Date().toISOString() });
+// 테스트 API
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
 });
 
-// ── SPA fallback ──────────────────────────────────────
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API OK" });
+});
+
+// 404 처리 (중요)
 app.use((req, res) => {
-  res.status(404).send('Not Found');
+  res.status(404).send("Not Found");
 });
 
-// ── 서버 시작 ──────────────────────────────────────────
+// ✅ Vercel 대응
 module.exports = app;
+
+// ✅ 로컬 실행용
+if (require.main === module) {
+  app.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
+  });
+}
