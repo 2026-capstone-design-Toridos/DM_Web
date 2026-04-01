@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(requestLogger);
 
 // 테스트 API
-app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+app.get("/api/test", (req, res) => {
+  res.json({ message: "API OK" });
 });
 
 app.get("/api/test", (req, res) => {
@@ -32,3 +32,7 @@ if (require.main === module) {
     console.log("Server running on http://localhost:3000");
   });
 }
+
+const path = require("path");
+
+app.use(express.static(path.join(__dirname, "public")));
