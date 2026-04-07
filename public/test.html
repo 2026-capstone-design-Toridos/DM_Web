@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GhostTracker Test</title>
+</head>
+<body>
+
+<h1>테스트 페이지</h1>
+
+<div style="height: 2000px">
+  <div data-section="top" style="height: 500px; background: lightblue">TOP</div>
+  <div data-section="middle" style="height: 500px; background: lightgreen">MIDDLE</div>
+  <div data-section="review" style="height: 500px; background: lightpink">REVIEW</div>
+  <div data-section="bottom" style="height: 500px; background: lightgray">BOTTOM</div>
+</div>
+
+<script src="/ghost-tracker-sdk-A.js"
+        data-endpoint="http://localhost:3000/api/logs/event"></script>
+
+<script src="/ghost-tracker-sdk-C.js"
+        data-endpoint="http://localhost:3000/api/logs/event"></script>
+
+</body>
+</html>

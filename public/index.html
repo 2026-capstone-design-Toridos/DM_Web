@@ -512,7 +512,7 @@
 
 <script>
 // ── 설정 ─────────────────────────────────────────────────
-const API_BASE = '/api';
+const API_BASE = 'http://localhost:3000/api';
 const SESSION_ID = 'sess_' + Math.random().toString(36).slice(2);
 
 // ── 상태 ─────────────────────────────────────────────────
@@ -985,9 +985,9 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
-<script
-  src="./ghost-tracker-sdk-A.js"
-  data-endpoint="https://webhook.site/8dd141a4-7359-409c-b38c-64d57e7b42a0">
-</script>
+<script src="./ghost-tracker-sdk-A.js"
+        data-endpoint="http://localhost:3000/api/logs/event"></script>
+
+<script src="./ghost-tracker-sdk-C.js"></script>
 </body>
 </html>

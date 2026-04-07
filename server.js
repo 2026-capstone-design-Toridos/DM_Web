@@ -2,13 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const { requestLogger } = require("./logger");
+// const { requestLogger } = require("./logger");
 
 const app = express();
+const events = [];
 
-app.use(cors());
+// 중요: CORS 설정 (credentials: true와 origin 명시 필수!)
+app.use(cors({
+    origin: 'http://127.0.0.1:5500', 
+    credentials: true
+}));
 app.use(express.json());
-app.use(requestLogger);
+// app.use(requestLogger);
 
 // ⭐ static 먼저
 app.use(express.static(path.join(__dirname, "public")));
@@ -79,10 +84,21 @@ app.post("/api/logs/session", (req, res) => {
   res.json({ ok: true });
 });
 
-// 로그 (이벤트)
-app.post("/api/logs/event", (req, res) => {
-  console.log("EVENT LOG:", req.body);
-  res.json({ ok: true });
+
+// 이벤트 받을 때 저장
+app.post('/api/logs/event', (req, res) => {
+    const eventData = {
+        ...req.body, // SDK가 보낸 데이터 (event_type, data 등)
+        timestamp: new Date().toISOString(), // 서버에서 시간 강제 생성
+        // 만약 SDK가 session_id를 data 안에 담아 보낸다면 꺼내서 상위로 올림
+        sessionId: req.body.session_id || (req.body.data && req.body.data.sessionId) || 'no-session'
+    };
+    events.push(eventData);
+    res.status(201).json({ status: 'success' });
+});
+// 조회 API 추가
+app.get("/api/logs", (req, res) => {
+  res.json(events);
 });
 
 // like

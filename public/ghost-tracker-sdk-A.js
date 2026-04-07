@@ -52,6 +52,7 @@
     } else {
       fetch(ENDPOINT, {
         method: "POST",
+        mode: "cors",
         body: JSON.stringify(body),
         headers: { "Content-Type": "application/json" },
         keepalive: true,
