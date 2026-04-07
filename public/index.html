@@ -559,7 +559,7 @@ async function logEvent(event, data = {}) {
 (async function init() {
   // API 헬스체크
   try {
-    await api('/health');
+    await api('api/health');
     document.getElementById('api-status').textContent = '● 서버 연결됨';
     document.getElementById('api-status').className = 'api-status ok';
     setTimeout(() => document.getElementById('api-status').style.display='none', 3000);
@@ -570,7 +570,7 @@ async function logEvent(event, data = {}) {
 
   // 세션 시작 로그
   try {
-    await api('/logs/session', {
+    await api('api/logs/session', {
       method: 'POST',
       body: JSON.stringify({ sessionId: SESSION_ID, referrer: document.referrer, device: navigator.userAgent })
     });
@@ -582,7 +582,7 @@ async function logEvent(event, data = {}) {
 // ── 상품 로드 ─────────────────────────────────────────────
 async function loadProducts(params = {}) {
   const qs = new URLSearchParams(params).toString();
-  return api('/products?' + qs);
+  return api('api/products?' + qs);
 }
 
 async function loadMainProducts(category = '전체') {
@@ -654,7 +654,7 @@ function renderPagination(totalPages) {
 // ── 상품 상세 ─────────────────────────────────────────────
 async function showDetail(id) {
   try {
-    const p = await api(`/products/${id}`);
+    const p = await api(`api/products/${id}`);
     detailProduct = p;
     detailQty = 1;
     selectedColorIdx = 0;
@@ -700,7 +700,7 @@ async function toggleLike(id, el) {
   const isLiked = liked.has(id);
   if (isLiked) { liked.delete(id); el.classList.remove('liked'); }
   else { liked.add(id); el.classList.add('liked'); showToast('♥ 관심 상품에 추가되었습니다'); }
-  try { await api(`/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
+  try { await api(`api/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
 }
 
 async function toggleDetailLike() {
@@ -718,7 +718,7 @@ async function toggleDetailLike() {
     document.getElementById('like-btn').style.color = 'var(--pink-dark)';
     showToast('♥ 관심 상품에 추가되었습니다');
   }
-  try { await api(`/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
+  try { await api(`api/products/${id}/like`, { method:'POST', body:JSON.stringify({ liked: !isLiked }) }); } catch {}
 }
 
 // ── 장바구니 ──────────────────────────────────────────────
@@ -731,7 +731,7 @@ async function addToCartDetail() {
 
 async function quickAdd(id) {
   try {
-    const p = await api(`/products/${id}`);
+    const p = await api(`api/products/${id}`);
     addToCart(p, 1, p.sizes[1]||p.sizes[0], p.colors[0].name);
   } catch {}
 }
@@ -744,7 +744,7 @@ function addToCart(p, qty, size, color) {
   updateCartBadge();
   showToast('🛍️ 장바구니에 담겼습니다');
   // API 로그
-  try { api(`/products/${p.id}/cart`, { method:'POST', body:JSON.stringify({ size, color, qty }) }); } catch {}
+  try { api(`api/products/${p.id}/cart`, { method:'POST', body:JSON.stringify({ size, color, qty }) }); } catch {}
 }
 
 function updateCartBadge() {
@@ -855,7 +855,7 @@ async function submitOrder() {
 
   try {
     // 1단계: 주문 생성
-    const orderRes = await api('/orders', {
+    const orderRes = await api('api/orders', {
       method: 'POST',
       body: JSON.stringify({
         items: cart.map(c => ({
@@ -882,7 +882,7 @@ async function submitOrder() {
       install: document.getElementById('card-install').value
     } : {};
 
-    const payRes = await api(`/orders/${orderRes.orderId}/payment`, {
+    const payRes = await api(`api/orders/${orderRes.orderId}/payment`, {
       method: 'POST',
       body: JSON.stringify({ paymentData })
     });
