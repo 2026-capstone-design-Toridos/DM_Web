@@ -9,8 +9,12 @@ const events = [];
 
 // 중요: CORS 설정 (credentials: true와 origin 명시 필수!)
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', 
-    credentials: true
+  origin: [
+    "http://127.0.0.1:5500",
+    "http://localhost:3000",
+    "https://toridos.vercel.app"
+  ],
+  credentials: true
 }));
 app.use(express.json());
 // app.use(requestLogger);

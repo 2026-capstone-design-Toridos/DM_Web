@@ -512,7 +512,7 @@
 
 <script>
 // ── 설정 ─────────────────────────────────────────────────
-const API_BASE = 'https://toridos.vercel.app'
+const API_BASE = 'https://toridos.vercel.app/'
 const SESSION_ID = 'sess_' + Math.random().toString(36).slice(2);
 
 // ── 상태 ─────────────────────────────────────────────────
@@ -985,9 +985,9 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 </script>
-<script src="./ghost-tracker-sdk-A.js"
-        data-endpoint="https://toridos.vercel.app/api/logs/event"></script>
-
-<script src="./ghost-tracker-sdk-C.js"></script>
+<script 
+  src="./ghosttracker.iife.js"
+  data-endpoint="https://toridos.vercel.app/api/logs/event">
+</script>
 </body>
 </html>
